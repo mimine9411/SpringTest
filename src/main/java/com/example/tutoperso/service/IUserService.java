@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface IUserService
 {
     User createUser(User user) throws UserAlreadyExistException;
-    User updateUser(User newUser) throws UserNotFoundException;
+    User updateUser(Long id, User newUser) throws UserNotFoundException;
     void deleteUser(Long id) throws UserNotFoundException;
     User getUser(Long id) throws UserNotFoundException;
     Page<User> getAllUsers(int page, int size);

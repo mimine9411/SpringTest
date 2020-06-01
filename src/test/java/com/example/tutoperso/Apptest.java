@@ -26,9 +26,9 @@ public class Apptest {
 		user.setUsername("test");
 		userService.createUser(user);
 
-		User found = userRepository.findOneByUsername(user.getUsername()).get();
+		User found = userRepository.findOneByUsername(user.getUsername()).orElse(null);
 
-		assert found.getUsername().equals(user.getUsername());
+		assert found != null;
 	}
 
 	@Test
@@ -40,7 +40,8 @@ public class Apptest {
 		user.setNom("Avant");
 		userService.createUser(user);
 		user.setNom("Après");
-		userService.updateUser(user);
+		Long id = userRepository.findOneByUsername(user.getUsername()).get().getId();
+		userService.updateUser(id, user);
 
 		User found = userRepository.findOneByUsername(user.getUsername()).get();
 
@@ -54,7 +55,8 @@ public class Apptest {
 		User user = new User();
 		user.setUsername("test");
 		userService.createUser(user);
-		userService.deleteUser(userRepository.findOneByUsername(user.getUsername()).get().getId());
+		Long id = userRepository.findOneByUsername(user.getUsername()).get().getId();
+		userService.deleteUser(id);
 
 		User found = userRepository.findOneByUsername(user.getUsername()).orElse(null);
 
@@ -68,9 +70,9 @@ public class Apptest {
 		User user = new User();
 		user.setUsername("test");
 		userService.createUser(user);
-		User get = userService.getUser(userRepository.findOneByUsername(user.getUsername()).get().getId());
+		User found = userService.getUser(userRepository.findOneByUsername(user.getUsername()).get().getId());
 
-		assert user.getUsername().equals(get.getUsername());
+		assert user.getUsername().equals(found.getUsername());
 	}
 
 	@Test

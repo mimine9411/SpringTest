@@ -30,16 +30,16 @@ public class UserService implements IUserService
     }
 
     @Override
-    public User updateUser(User userDetail) throws UserNotFoundException {
-        User userToUpdate = userRepository.findOneByUsername(userDetail.getUsername().toLowerCase()).orElseThrow(() -> new UserNotFoundException());
+    public User updateUser(Long id, User userDetail) throws UserNotFoundException {
+        User userToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
         userRepository.findOneByUsername(userDetail.getUsername().toLowerCase()).ifPresent(existingUser -> {
             if(existingUser.getId() != userToUpdate.getId())
-                throw new UserAlreadyExistException("Ce pseudo exitse déjà !");
+                throw new UserAlreadyExistException("Ce pseudo existe déjà !");
         });
         User user = new User(userDetail.getNom(), userDetail.getPrenom(), userDetail.getUsername(), userDetail.getMotDePasse(), userDetail.getAdresse(), userDetail.getEmail());
         user.setId(userToUpdate.getId());
-        User updateUser = userRepository.save(user);
-        return updateUser;
+        User updatedUser = userRepository.save(user);
+        return updatedUser;
     }
 
     @Override
@@ -50,7 +50,8 @@ public class UserService implements IUserService
 
     @Override
     public User getUser(Long id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable !"));
+        User found = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable !"));
+        return found;
     }
 
     @Override

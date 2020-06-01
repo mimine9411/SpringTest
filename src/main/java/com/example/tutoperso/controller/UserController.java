@@ -29,10 +29,10 @@ public class UserController {
         return ResponseEntity.created(location).body(newUser); // api/create/{id}
     }
 
-    @ApiOperation(value = "Modification d'un utilisateur par son pseudo")
-    @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
-        User updatedUser = userService.updateUser(user);
+    @ApiOperation(value = "Modification d'un utilisateur par son ID")
+    @PostMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
+        User updatedUser = userService.updateUser(id, user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updatedUser.getId()).toUri();
         return ResponseEntity.created(location).body(updatedUser); // api/create/{id}
     }
@@ -46,9 +46,9 @@ public class UserController {
     @ApiOperation(value = "Récupération d'un utilisateur par son ID")
     @PostMapping("/get/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        User deletedUser = userService.getUser(id);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.created(location).body(deletedUser);
+        User found = userService.getUser(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(found.getId()).toUri();
+        return ResponseEntity.created(location).body(found); // api/create/{id}
     }
 
     @ApiOperation(value = "Récupération de tout les utilisateurs par page")

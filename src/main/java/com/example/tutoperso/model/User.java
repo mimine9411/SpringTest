@@ -2,6 +2,7 @@ package com.example.tutoperso.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Data
 public class User
 {
+    @Nullable
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
