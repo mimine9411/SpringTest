@@ -47,7 +47,7 @@ public class UserController {
     @PostMapping("/get/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         User deletedUser = userService.getUser(id);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(deletedUser.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(location).body(deletedUser);
     }
 
