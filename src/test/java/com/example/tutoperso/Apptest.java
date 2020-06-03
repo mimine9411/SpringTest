@@ -175,16 +175,20 @@ public class Apptest {
 		user3.setUsername("test3");
 		userService.createUser(user3);
 
-		List<User> listeUser = new ArrayList<>();
-		listeUser.add(user1);
-		listeUser.add(user2);
-		listeUser.add(user3);
+		List<String> listeUser = new ArrayList<>();
+		listeUser.add(user1.getUsername());
+		listeUser.add(user2.getUsername());
+		listeUser.add(user3.getUsername());
 
 		Pageable pageable = PageRequest.of(0, 3);
-		List<User> listeUserFound = userRepository.findAll(pageable).getContent();
+
+		List<String> listeUserFound = new ArrayList<>();
+		listeUserFound.add(userRepository.findAll(pageable).getContent().get(0).getUsername());
+		listeUserFound.add(userRepository.findAll(pageable).getContent().get(1).getUsername());
+		listeUserFound.add(userRepository.findAll(pageable).getContent().get(2).getUsername());
 
 
-		assert listeUser.equals(listeUserFound);
+		assert listeUserFound.containsAll(listeUser);
 	}
 
 	@Test
