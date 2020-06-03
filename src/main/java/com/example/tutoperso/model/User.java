@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Data
 public class User
 {
-    @Nullable
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -36,5 +35,16 @@ public class User
     public User()
     {
 
+    }
+
+    public User(Long id, String nom, String prenom, String username, String motDePasse, String adresse, String email)
+    {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.adresse = adresse;
+        this.username = username;
+        this.motDePasse = motDePasse;
+        this.email = email;
     }
 }

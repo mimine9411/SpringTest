@@ -1,14 +1,19 @@
 package com.example.tutoperso;
 
+import com.example.tutoperso.exception.*;
 import com.example.tutoperso.model.User;
 import com.example.tutoperso.repositories.UserRepository;
 import com.example.tutoperso.service.UserService;
+import org.junit.Rule;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+
 
 @SpringBootTest
 public class Apptest {
@@ -18,6 +23,11 @@ public class Apptest {
 
 	@Autowired
 	UserService userService;
+
+	@Test
+	public void contextLoads() {
+
+	}
 
 	@Test
 	public void createUserTest() {
@@ -32,6 +42,37 @@ public class Apptest {
 	}
 
 	@Test
+	public void createUserAlreadyExistExceptionTest()
+	{
+		userRepository.deleteAll();
+		User user = new User();
+		user.setUsername("test");
+		userService.createUser(user);
+		try {
+			userService.createUser(user);
+			assert false;
+		}
+		catch(UserAlreadyExistException e) {
+			assert true;
+		}
+	}
+
+	@Test
+	public void createNotValidUsernameExceptionTest()
+	{
+		userRepository.deleteAll();
+		User user = new User();
+		user.setUsername("");
+		try {
+			userService.createUser(user);
+			assert false;
+		}
+		catch(NotValidUsernameException e) {
+			assert true;
+		}
+	}
+
+	@Test
 	public void updateUserTest()
 	{
 		userRepository.deleteAll();
@@ -41,11 +82,26 @@ public class Apptest {
 		userService.createUser(user);
 		user.setNom("Après");
 		Long id = userRepository.findOneByUsername(user.getUsername()).get().getId();
-		userService.updateUser(id, user);
+		userService.updateUser(user);
 
 		User found = userRepository.findOneByUsername(user.getUsername()).get();
 
 		assert found.getUsername().equals(user.getUsername());
+	}
+
+	@Test
+	public void updateUserExceptionTest()
+	{
+		userRepository.deleteAll();
+		User user = new User();
+		user.setUsername("test");
+		try {
+			userService.updateUser(user);
+			assert false;
+		}
+		catch(UserNotFoundException e) {
+			assert true;
+		}
 	}
 
 	@Test
@@ -55,12 +111,27 @@ public class Apptest {
 		User user = new User();
 		user.setUsername("test");
 		userService.createUser(user);
-		Long id = userRepository.findOneByUsername(user.getUsername()).get().getId();
-		userService.deleteUser(id);
+
+		userService.deleteUser(user.getUsername());
 
 		User found = userRepository.findOneByUsername(user.getUsername()).orElse(null);
 
 		assert found == null;
+	}
+
+	@Test
+	public void deleteUserNotFoundExceptionTest()
+	{
+		userRepository.deleteAll();
+		User user = new User();
+		user.setUsername("test");
+		try {
+			userService.deleteUser(user.getUsername());
+			assert false;
+		}
+		catch(UserNotFoundException e) {
+			assert true;
+		}
 	}
 
 	@Test
@@ -70,9 +141,24 @@ public class Apptest {
 		User user = new User();
 		user.setUsername("test");
 		userService.createUser(user);
-		User found = userService.getUser(userRepository.findOneByUsername(user.getUsername()).get().getId());
+		User found = userService.getUser(user.getUsername());
 
 		assert user.getUsername().equals(found.getUsername());
+	}
+
+	@Test
+	public void getUserNotFoundExceptionTest()
+	{
+		userRepository.deleteAll();
+		User user = new User();
+		user.setUsername("test");
+		try {
+			userService.getUser(user.getUsername());
+			assert false;
+		}
+		catch(UserNotFoundException e) {
+			assert true;
+		}
 	}
 
 	@Test
@@ -89,18 +175,42 @@ public class Apptest {
 		user3.setUsername("test3");
 		userService.createUser(user3);
 
-		List<String> listeUsername = new ArrayList<>();
-		listeUsername.add(user1.getUsername());
-		listeUsername.add(user2.getUsername());
-		listeUsername.add(user3.getUsername());
+		List<User> listeUser = new ArrayList<>();
+		listeUser.add(user1);
+		listeUser.add(user2);
+		listeUser.add(user3);
 
-		List<String> getAllUsername = new ArrayList<>();
+		Pageable pageable = PageRequest.of(0, 3);
+		List<User> listeUserFound = userRepository.findAll(pageable).getContent();
 
-		getAllUsername.add(userService.getAllUsers(0,3).getContent().get(0).getUsername());
-		getAllUsername.add(userService.getAllUsers(0,3).getContent().get(1).getUsername());
-		getAllUsername.add(userService.getAllUsers(0,3).getContent().get(2).getUsername());
 
-		assert listeUsername.equals(getAllUsername);
+		assert listeUser.equals(listeUserFound);
+	}
+
+	@Test
+	public void getAllIncorrectPageParamExceptionTest()
+	{
+		userRepository.deleteAll();
+		try {
+			userService.getAllUsers(-1,-1);
+			assert false;
+		}
+		catch(IncorrectPageParamException e) {
+			assert true;
+		}
+	}
+
+	@Test
+	public void getAllIncorrectSizePageParamExceptionTest()
+	{
+		userRepository.deleteAll();
+		try {
+			userService.getAllUsers(0,0);
+			assert false;
+		}
+		catch(IncorrectSizePageParamException e) {
+			assert true;
+		}
 	}
 
 }
