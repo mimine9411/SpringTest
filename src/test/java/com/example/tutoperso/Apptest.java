@@ -32,10 +32,8 @@ public class Apptest {
 	@Test
 	public void createUserTest() {
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
+		User user = new User().makeUsername("test");
 		userService.createUser(user);
-
 		User found = userRepository.findOneByUsername(user.getUsername()).orElse(null);
 
 		assert found != null;
@@ -45,8 +43,7 @@ public class Apptest {
 	public void createUserAlreadyExistExceptionTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
+		User user = new User().makeUsername("test");
 		userService.createUser(user);
 		try {
 			userService.createUser(user);
@@ -61,8 +58,7 @@ public class Apptest {
 	public void createNotValidUsernameExceptionTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("");
+		User user = new User().makeUsername("");
 		try {
 			userService.createUser(user);
 			assert false;
@@ -76,9 +72,7 @@ public class Apptest {
 	public void updateUserTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
-		user.setNom("Avant");
+		User user = new User().makeUsername("test").makeNom("Avant");
 		userService.createUser(user);
 		user.setNom("Après");
 		Long id = userRepository.findOneByUsername(user.getUsername()).get().getId();
@@ -93,8 +87,7 @@ public class Apptest {
 	public void updateUserExceptionTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
+		User user = new User().makeUsername("test");
 		try {
 			userService.updateUser(user);
 			assert false;
@@ -108,8 +101,7 @@ public class Apptest {
 	public void deleteUserTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
+		User user = new User().makeUsername("test");
 		userService.createUser(user);
 
 		userService.deleteUser(user.getUsername());
@@ -123,8 +115,7 @@ public class Apptest {
 	public void deleteUserNotFoundExceptionTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
+		User user = new User().makeUsername("test");
 		try {
 			userService.deleteUser(user.getUsername());
 			assert false;
@@ -138,8 +129,7 @@ public class Apptest {
 	public void getUserTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
+		User user = new User().makeUsername("test");
 		userService.createUser(user);
 		User found = userService.getUser(user.getUsername());
 
@@ -150,10 +140,8 @@ public class Apptest {
 	public void getUserNotFoundExceptionTest()
 	{
 		userRepository.deleteAll();
-		User user = new User();
-		user.setUsername("test");
 		try {
-			userService.getUser(user.getUsername());
+			userService.getUser("test");
 			assert false;
 		}
 		catch(UserNotFoundException e) {
@@ -165,14 +153,11 @@ public class Apptest {
 	public void getAllUsersTest()
 	{
 		userRepository.deleteAll();
-		User user1 = new User();
-		user1.setUsername("test1");
+		User user1 = new User().makeUsername("test1");
 		userService.createUser(user1);
-		User user2 = new User();
-		user2.setUsername("test2");
+		User user2 = new User().makeUsername("test2");
 		userService.createUser(user2);
-		User user3 = new User();
-		user3.setUsername("test3");
+		User user3 = new User().makeUsername("test3");
 		userService.createUser(user3);
 
 		List<String> listeUser = new ArrayList<>();

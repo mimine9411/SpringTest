@@ -21,7 +21,7 @@ public class UserService implements IUserService
     @Override
     public User createUser(User user) throws UserAlreadyExistException, NotValidUsernameException {
         if(user.getUsername().isEmpty())
-            throw new NotValidUsernameException("Le pseudo n'est pas valide !");
+            throw new NotValidUsernameException("Le pseudo ne peut être vide !");
         userRepository.findOneByUsername(user.getUsername().toLowerCase()).ifPresent(existingUser -> {
             throw new UserAlreadyExistException("Ce pseudo exitse déjà !");
         });
@@ -33,12 +33,8 @@ public class UserService implements IUserService
     @Override
     public User updateUser(User userDetail) throws UserNotFoundException {
         User userFound = userRepository.findOneByUsername(userDetail.getUsername()).orElseThrow(()->new UserNotFoundException("Utilisateur introuvable !"));
-        //chercher user en fonction du usernanme, si je le trouve : je vérifie que l'ID de celui que j'ai trouvé est égale à l'ID que je veux mettre à jour.
-        //Si c'est différent, je lance l'Exception.
-        //if(userFound.getId() != userDetail.getId())
-        //   throw new UserAlreadyExistException("L'ID saisit ne correspond pas à  celui de l'utilisateur à modifier !");
-        User user = new User(userFound.getId(), userDetail.getNom(), userDetail.getPrenom(), userDetail.getUsername(), userDetail.getMotDePasse(), userDetail.getAdresse(), userDetail.getEmail());
-        User updatedUser = userRepository.save(user);
+        userDetail.setId(userFound.getId());
+        User updatedUser = userRepository.save(userDetail);
         return updatedUser;
     }
 

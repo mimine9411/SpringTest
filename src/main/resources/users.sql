@@ -1,0 +1,11 @@
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('74 rue du martin pêcheur','mimine9411@gmail.com','psw','Semlali','Amine','mimine9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('10 rue du martin pêcheur','sdqq9411@gmail.com','psw','Semlali','Selma','selma9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('54 rue du martin pêcheur','gryh9411@gmail.com','psw','Semlali','Younes','younes9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('86 rue du martin pêcheur','mimghfe9411@gmail.com','psw','Semlali','anas','anas9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('35 rue du martin pêcheur','mimhtr411@gmail.com','psw','Semlali','Lyna','Lyna9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('71 rue du martin pêcheur','mimretegmail.com','psw','Semlali','Ryan','Ryan9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('74 rue du martin pêcheur','miesr9411@gmail.com','psw','Semlali','Sofiane','Sofiane9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('6 rue du martin pêcheur','mrdhne9411@gmail.com','psw','Semlali','Momo','Momo9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('14 rue du martin pêcheur','misefine9411@gmail.com','psw','Semlali','Naim','naim9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('94 rue du martin pêcheur','mifsefe9411@gmail.com','psw','Semlali','Wahlan','walhan9411');
+insert into users (adresse, email, mot_de_passe, nom, prenom, username) values ('55 rue du martin pêcheur','fee9411@gmail.com','psw','Semlali','Jessim','jessim9411');

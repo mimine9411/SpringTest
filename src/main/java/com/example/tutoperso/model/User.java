@@ -47,4 +47,21 @@ public class User
         this.motDePasse = motDePasse;
         this.email = email;
     }
+
+    public User makeUsername(String username)
+    {
+        this.username = username;
+        return this;
+    }
+
+    public User makeNom(String username)
+    {
+        this.nom = username;
+        return this;
+    }
+
+    public User makeId(long id) {
+        this.id = id;
+        return this;
+    }
 }
