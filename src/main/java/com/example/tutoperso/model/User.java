@@ -1,6 +1,8 @@
 package com.example.tutoperso.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.lang.Nullable;
 
@@ -8,7 +10,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
-@Data
+@Data // a voir
+@NoArgsConstructor
+@AllArgsConstructor
 public class User
 {
     @Id
@@ -24,22 +28,6 @@ public class User
 
     public User(String nom, String prenom, String username, String motDePasse, String adresse, String email)
     {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.adresse = adresse;
-        this.username = username;
-        this.motDePasse = motDePasse;
-        this.email = email;
-    }
-
-    public User()
-    {
-
-    }
-
-    public User(Long id, String nom, String prenom, String username, String motDePasse, String adresse, String email)
-    {
-        this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.adresse = adresse;

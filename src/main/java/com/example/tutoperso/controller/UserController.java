@@ -36,9 +36,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
         User updatedUser = userService.updateUser(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updatedUser.getId()).toUri();
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(location);
-        return new ResponseEntity<>(updatedUser, responseHeaders, HttpStatus.OK);
+        return ResponseEntity.created(location).body(updatedUser);
     }
 
     @ApiOperation(value = "Suppression d'un utilisateur par son ID")

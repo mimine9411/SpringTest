@@ -23,12 +23,15 @@ public class MockitoTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private User user;
+
     @InjectMocks
     private UserService userService;
 
     @Test
     public void createUserTest() {
-        User user = new User().makeUsername("test");
+        user.setUsername("test");
         when(userRepository.save(user)).thenReturn(user);
         assert userService.createUser(user).equals(userRepository.save(user));
     }
@@ -36,7 +39,7 @@ public class MockitoTest {
     @Test(expected = UserAlreadyExistException.class)
     public void createUserAlreadyExistExceptionTest()
     {
-        User user = new User().makeUsername("test");
+        user.setUsername("test");
         when(userRepository.findOneByUsername("test")).thenReturn(Optional.of(user));
         userService.createUser(user);
     }
@@ -44,14 +47,15 @@ public class MockitoTest {
     @Test(expected = NotValidUsernameException.class)
     public void createNotValidUsernameExceptionTest()
     {
-        User user = new User().makeUsername("");
+        user.setUsername("test");
         userService.createUser(user);
     }
 
     @Test
     public void updateUserTest()
     {
-        User user = new User().makeUsername("test").makeNom("Avant");
+        user.setUsername("test");
+        user.setNom("Avant");
         when(userRepository.findOneByUsername("test")).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user.makeNom("apres"));
         assert userService.updateUser(user).equals(userRepository.findOneByUsername("test").get());
@@ -60,14 +64,15 @@ public class MockitoTest {
     @Test(expected = UserNotFoundException.class)
     public void updateUserExceptionTest()
     {
-        User user = new User().makeUsername("test").makeNom("Avant");
+        user.setUsername("test");
+        user.setNom("Avant");
         userService.updateUser(user);
     }
 
     @Test
     public void deleteUserTest()
     {
-        User user = new User().makeUsername("test");
+        user.setUsername("test");
         when(userRepository.findOneByUsername("test")).thenReturn(Optional.of(user));
         userService.deleteUser("test");
         verify(userRepository, times(1)).delete(user);
